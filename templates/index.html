@@ -1,0 +1,88 @@
+<!-- templates/index.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apple Quality Prediction</title>
+
+    <style>
+        body {
+            background-image: url('/static/Apple.jpeg');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+        }
+
+        form {
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <form id="predictionForm">
+        <h1>Apple Quality Prediction</h1>
+        <label for="Size">Size:</label>
+        <input type="text" id="Size" name="Size" required><br>
+
+        <label for="Weight">Weight:</label>
+        <input type="text" id="Weight" name="Weight" required><br>
+
+        <label for="Sweetness">Sweetness:</label>
+        <input type="text" id="Sweetness" name="Sweetness" required><br>
+
+        <label for="Crunchiness">Crunchiness:</label>
+        <input type="text" id="Crunchiness" name="Crunchiness" required><br>
+
+        <label for="Juiciness">Juiciness:</label>
+        <input type="text" id="Juiciness" name="Juiciness" required><br>
+
+        <label for="Ripeness">Ripeness:</label>
+        <input type="text" id="Ripeness" name="Ripeness" required><br>
+
+        <label for="Acidity">Acidity:</label>
+        <input type="text" id="Acidity" name="Acidity" required><br>
+
+        <button type="button" onclick="predict()">Predict</button>
+    </form>
+    <p id="predictionResult"></p>
+
+    <script>
+        function predict() {
+            var data = {
+                'Size': document.getElementById('Size').value,
+                'Weight': document.getElementById('Weight').value,
+                'Sweetness': document.getElementById('Sweetness').value,
+                'Crunchiness': document.getElementById('Crunchiness').value,
+                'Juiciness': document.getElementById('Juiciness').value,
+                'Ripeness': document.getElementById('Ripeness').value,
+                'Acidity': document.getElementById('Acidity').value
+            };
+
+            fetch('/predict_apple_quality', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(result => {
+                document.getElementById('predictionResult').innerText = 'Predicted Quality: ' + result.prediction;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</body>
+</html>
